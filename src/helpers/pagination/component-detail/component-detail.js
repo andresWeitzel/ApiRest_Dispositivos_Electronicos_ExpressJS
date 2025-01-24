@@ -1,101 +1,46 @@
+const { component } = require("../../../enums/names/fields");
+const {
+  createMappings,
+} = require("../../../helpers/validations/format/fields");
 //Const-vars
 let msgResponse;
 let msgLog;
 
 /**
- * @description checks the order by value of the query string param to assign a field value
- * @param {String} orderBy String type
- * @returns a string with the field value or null
+ * @description Checks the "orderBy" query string parameter to map it to a specific field value
+ * @param {String} orderBy The input string
+ * @returns {String|null} The mapped field value or null if invalid
  */
 const checkOrderBy = async (orderBy) => {
   try {
-    msgResponse = null;
-    msgLog = null;
-
-    
-    if (typeof orderBy != "string") {
+    if (typeof orderBy !== "string") {
       return null;
     }
 
-    switch (orderBy.toLowerCase()) {
-      case 'id':
-        orderBy = 'id';
-        break;
-      case 'hojadedatos':
-      case 'hoja de datos':
-      case 'hoja_de_datos':
-        orderBy = 'hoja_de_datos';
-        break;
-      case 'longitud':
-        orderBy = 'longitud';
-        break;
-      case 'ancho':
-        orderBy = 'ancho';
-        break;
-      case 'peso':
-        orderBy = 'peso';
-        break;
-      case 'material':
-        orderBy = 'material';
-        break;
-      case 'voltajerrecomendado':
-      case 'voltaje recomendado':
-      case 'voltaje_recomendado':
-        orderBy = 'voltaje_recomendado';
-        break;
-      case 'voltajeminentrada':
-      case 'voltaje min entrada':
-      case 'voltaje_min_entrada':
-        orderBy = 'voltaje_min_entrada';
-        break;
-      case 'voltajemaxentrada':
-      case 'voltaje max entrada':
-      case 'voltaje_max_entrada':
-        orderBy = 'voltaje_max_entrada';
-        break;
-      default:
-        orderBy = null;
+    const orderByMapping = {
+      [component.ID]: component.ID,
+      [component.HOJA_DE_DATOS]: component.HOJA_DE_DATOS,
+      [component.LONGITUD]: component.LONGITUD,
+      [component.ANCHO]: component.ANCHO,
+      [component.PESO]: component.PESO,
+      [component.MATERIAL]: component.MATERIAL,
+      [component.VOLTAJE_RRECOMENDADO]: component.VOLTAJE_RRECOMENDADO,
+      [component.VOLTAJE_MIN_ENTRADA]: component.VOLTAJE_MIN_ENTRADA,
+      [component.VOLTAJE_MAX_ENTRADA]: component.VOLTAJE_MAX_ENTRADA,
+    };
+
+    const mapping = createMappings(orderByMapping);
+
+    // Comprobar si orderBy coincide con alguna de las claves del mapeo
+    if (mapping.hasOwnProperty(orderBy)) {
+      return mapping[orderBy];
     }
-    return orderBy;
-  } catch (error) {
-    msgResponse =
-      'ERROR in checkOrderBy() helper function from component-detail.js.';
-    msgLog = msgResponse + `Caused by ${error}`;
-    console.log(msgLog);
+
     return null;
-  }
-};
-
-/**
- * @description checks the order at value of the query string param to assign a field value
- * @param {String} orderAt String type
- * @returns a string with the field value or null
- */
-const checkOrderAt = async (orderAt) => {
-  try {
-    msgResponse = null;
-    msgLog = null;
-
-    
-    if (typeof orderAt != "string") {
-      return null;
-    }
-
-    switch (orderAt.toLowerCase()) {
-      case 'asc':
-        orderAt = 'ASC';
-        break;
-      case 'desc':
-        orderAt = 'DESC';
-        break;
-      default:
-        orderAt = null;
-    }
-    return orderAt;
   } catch (error) {
     msgResponse =
-      'ERROR in checkOrderAt() helper function from component-detail.js.';
-    msgLog = msgResponse + `Caused by ${error}`;
+      "ERROR in checkOrderBy() helper function from component-detail.js.";
+    msgLog = msgResponse + ` Caused by ${error}`;
     console.log(msgLog);
     return null;
   }
@@ -103,5 +48,4 @@ const checkOrderAt = async (orderAt) => {
 
 module.exports = {
   checkOrderBy,
-  checkOrderAt,
 };

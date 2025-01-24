@@ -15,8 +15,8 @@ const { statusName } = require('../../enums/database/status');
 const { checkErrors } = require('../../helpers/sequelize/errors');
 const {
   checkOrderBy,
-  checkOrderAt,
 } = require('../../helpers/pagination/component/component');
+const { checkOrderAt } = require('../../helpers/pagination/ordering/orderAt');
 const { paginationNameValueError } = require('../../enums/pagination/errors');
 //Const
 const ORDER_BY_NAME_VALUE_ERROR =
